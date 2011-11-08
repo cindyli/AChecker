@@ -127,7 +127,7 @@ AChecker.output = AChecker.output || {};
 	};
 
 	/**
-	 * Validates if a html file is provided
+	 * Validates if a html file (paste) is provided
 	 */
 	AChecker.input.validatePaste = function () {
 		// check file type
@@ -137,6 +137,58 @@ AChecker.output = AChecker.output || {};
 			return false;
 		}
 		disableClickablesAndShowSpinner("spinner_by_paste");
+	};
+	
+	/**
+	 * Validates file select menu, sends file & problem type to start_export.php,
+	 * receives file's path and starts downloading
+	 */
+	AChecker.input.validateFile = function (data) {
+		// check selected items
+		var file = document.getElementById("fileselect").value;
+		var problem = document.getElementById("problemselect").value;
+		if ((!file || file=="<?php echo _AC('select_file'); ?>") && (!problem || problem=="<?php echo _AC('select_problem'); ?>")) {
+			alert('Please provide file type and problem!');
+			return false;
+		}
+		if (!file || file=="<?php echo _AC('select_file'); ?>") {
+			alert('Please provide a file type!');
+			return false;
+		}
+		if (!problem || problem=="<?php echo _AC('select_problem'); ?>") {
+			alert('Please provide a problem!');
+			return false;
+		}
+		
+		$("#validate_file_button").val("Please wait");
+		
+		// show spinner		
+		disableClickablesAndShowSpinner(data);		     
+		
+		// make dataString and send it
+		var dataString = 'file=' + file + '&problem=' + problem;
+		
+		$.ajax({
+		type: "POST",
+		url: "checker/start_export.php",
+		data: dataString,
+		cache:false,
+		success: function(returned_data){
+			// change button label
+			$("#validate_file_button").val("Get File");
+			
+			// hide spinner
+			document.getElementById("spinner_export").style.display = 'none';
+			
+			// change src and start downloading
+			var ifrm = document.getElementById("downloadFrame");
+		    ifrm.src = "checker/download.php?path="+returned_data;
+		},
+		
+		error: function(xhr, errorType, exception) {
+			alert("An error occured: \n" + exception);
+        }
+		});
 	};
 
 	/**
