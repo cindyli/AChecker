@@ -385,6 +385,20 @@ CREATE TABLE `user_links` (
   PRIMARY KEY (`user_link_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
+# --------------------------------------------------------
+# Table structure for table `web_service_api_keys`
+# since 1.4
+
+CREATE TABLE `web_service_api_keys` (
+  `web_service_api_key_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` mediumint(8) NOT NULL,
+  `key` varchar(40) NOT NULL,
+  `revoked` tinyint(4) NOT NULL DEFAULT '0',
+  `create_date` datetime NOT NULL,
+  `last_update` datetime,
+  PRIMARY KEY (`web_service_api_key_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
 ############ DO NOT remove this line. Below are the required data insert ############# Dumping data for table `checks`
 
 INSERT INTO `checks` (`check_id`, `user_id`, `html_tag`, `confidence`, `note`, `name`, `err`, `description`, `search_str`, `long_description`, `rationale`, `how_to_repair`, `repair_example`, `question`, `decision_pass`, `decision_fail`, `test_procedure`, `test_expected_result`, `test_failed_result`, `func`, `open_to_public`, `create_date`) VALUES
@@ -3768,7 +3782,7 @@ INSERT INTO `themes` (`title`, `version`, `dir_name`, `last_updated`, `extra_inf
 
 # Dumping data for table `users`
 
-INSERT INTO `users` (`user_id`, `login`, `password`, `user_group_id`, `first_name`, `last_name`, `web_service_id`, `status`, `create_date`) VALUES 
+INSERT INTO `users` (`user_id`, `login`, `password`, `user_group_id`, `first_name`, `last_name`, `web_service_id`, `status`, `create_date`) VALUES
 (1, 'ATutor', '0cbab2aec26a53b0107487d43b1b8eb29384ad10', 2, 'ATutor', 'ATutor', '2f4149673d93b7f37eb27506905f19d63fbdfe2d', 1, '2009-03-11 10:16:55');
 
 
